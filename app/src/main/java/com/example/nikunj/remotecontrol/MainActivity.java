@@ -68,9 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        parentPath=parentPath+"/"+((Button)view).getText();
+    public void makeActivity(){
         linear.removeAllViews();
         try{
             out.println(parentPath);
@@ -108,9 +106,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    @Override
+    public void onClick(View view) {
+        parentPath=parentPath+"/"+((Button)view).getText();
+        makeActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        parentPath=parentPath.substring(0,parentPath.lastIndexOf('/'));
+        //errorHandler(new Exception(parentPath));
+        makeActivity();
+    }
+
     public void errorHandler(Exception e){
         Intent er = new Intent(this, ErrorLabel.class);
-        er.putExtra("error", e.toString());
+        er.putExtra("error", e.toString()+" \nMessage - "+e.getMessage());
         startActivity(er);
     }
 
