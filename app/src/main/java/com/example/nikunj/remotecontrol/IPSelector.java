@@ -21,6 +21,12 @@ public class IPSelector extends AppCompatActivity {
 
     }
 
+    //code to get your own pc ip
+    public void getPCIP(){
+
+    }
+
+
     public void onClick(View view) {
         Intent i=new Intent(this,MainActivity.class);
         i.putExtra("ip",ip.getText().toString());
