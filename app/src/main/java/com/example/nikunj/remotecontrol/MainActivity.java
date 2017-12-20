@@ -1,10 +1,16 @@
 package com.example.nikunj.remotecontrol;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import java.io.BufferedReader;
@@ -22,8 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     PrintWriter out;
     Socket s = null;
     private LinearLayout linear;
-    String parentPath="/home/nikunj";
-
+    String parentPath = "/home";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())), false);
 
-            out.println("/home/nikunj");
+            //out.println("/home/nikunj");
+            makeActivity();
+        } catch (Exception e) {
+            errorHandler(e);
+        }
+        Button drives=(Button)findViewById(R.id.drives);
+        drives.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parentPath="/media";
+                makeActivity();
+            }
+        });
+    }
+
+    public void makeActivity() {
+        linear.removeAllViews();
+        try {
+            out.println(parentPath);
             out.flush();
-            List<String> list = new LinkedList<>();
+            List<String> file = new LinkedList<>();
+            List<String> dir = new LinkedList<>();
             String str2 = in.readLine();
             if (str2.equals("START_MSG")) {
                 boolean reading = true;
@@ -49,59 +73,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (str2.equals("END_MSG")) {
                         reading = false;
                     } else {
-                        list.add(str2);
+                        if (str2.charAt(0) == 16)
+                            dir.add(str2.substring(1));
+                        else
+                            file.add(str2.substring(1));
+
                     }
                 }
             }
             int id = 0;
-            for (String s : list) {
-
-                //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                Button btn = new Button(this);
+            Button btn;
+            for (String s : dir) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View rowView = inflater.inflate(R.layout.folder, null);
+                // Add the new row before the add field button.
+                linear.addView(rowView, linear.getChildCount() - 1);
+                btn = (Button) (linear.findViewById(R.id.dir));
                 btn.setId(id++);
                 btn.setText(s);
                 btn.setOnClickListener(this);
-                linear.addView(btn);
             }
-        } catch (Exception e) {
-            errorHandler(e);
-        }
-    }
 
-    public void makeActivity(){
-        linear.removeAllViews();
-        try{
-            out.println(parentPath);
-            out.flush();
-
-            List<String> list=new LinkedList<>();
-            String str2 = in.readLine();
-            if (str2.equals("START_MSG")) {
-                boolean reading = true;
-                while (reading) {
-                    str2 = in.readLine();
-                    if (str2.equals("END_MSG")) {
-                        reading = false;
-                    } else {
-                        list.add(str2);
+            for (String s : file) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View rowView = inflater.inflate(R.layout.file, null);
+                // Add the new row before the add field button.
+                linear.addView(rowView, linear.getChildCount());
+                btn = (Button) (linear.findViewById(R.id.dir));
+                btn.setId(id++);
+                btn.setText(s);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        parentPath = parentPath + "/" + ((Button) view).getText();
+                        out.println(parentPath);
+                        out.flush();
                     }
-                }
-            }
-            int id=0;
-            for (String s : list) {
-
-                //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                Button btn = new Button(this);
-                btn.setId(id++);
-                btn.setText(s);
-                btn.setOnClickListener(this);
-                linear.addView(btn);
+                });
             }
 
-        }
-        catch (Exception e){
-            Intent er=new Intent(this,ErrorLabel.class);
-            er.putExtra("error",e.toString());
+        } catch (Exception e) {
+            Intent er = new Intent(this, ErrorLabel.class);
+            er.putExtra("error", e.toString());
             startActivity(er);
         }
     }
@@ -109,20 +122,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        parentPath=parentPath+"/"+((Button)view).getText();
+        parentPath = parentPath + "/" + ((Button) view).getText();
         makeActivity();
     }
 
     @Override
     public void onBackPressed() {
-        parentPath=parentPath.substring(0,parentPath.lastIndexOf('/'));
+        parentPath = parentPath.substring(0, parentPath.lastIndexOf('/'));
         //errorHandler(new Exception(parentPath));
         makeActivity();
     }
 
-    public void errorHandler(Exception e){
+    public void errorHandler(Exception e) {
         Intent er = new Intent(this, ErrorLabel.class);
-        er.putExtra("error", e.toString()+" \nMessage - "+e.getMessage());
+        er.putExtra("error", e.toString() + " \nMessage - " + e.getMessage());
         startActivity(er);
     }
 
