@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        parentPath = parentPath + "/" + ((Button) view).getText();
-                        out.println(parentPath);
+
+                        out.println(parentPath + "/" + ((Button) view).getText());
                         out.flush();
                     }
                 });
