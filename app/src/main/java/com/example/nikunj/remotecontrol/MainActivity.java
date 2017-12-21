@@ -16,10 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     BufferedReader in;
     PrintWriter out;
     Socket s = null;
+    EditText cmd;
     private LinearLayout linear;
     String parentPath = "/home";
 
@@ -147,7 +150,9 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             parentPath = parentPath.substring(0, parentPath.lastIndexOf('/'));
-            //errorHandler(new Exception(parentPath));
+            if(parentPath.equals("")){
+                parentPath="/home";
+            }
             makeActivity();
         }
     }
@@ -183,9 +188,34 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_drive) {
             parentPath = "/media";
             makeActivity();
+
         } else if (id == R.id.nav_cmd) {
+            linear.removeAllViews();
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View rowView = inflater.inflate(R.layout.command_exec, null);
+            // Add the new row before the add field button.
+            linear.addView(rowView, linear.getChildCount());
+            cmd=(EditText)findViewById(R.id.command);
+            Button exec=(Button)findViewById(R.id.execute);
+
+            cmd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cmd.setText("");
+                }
+            });
+
+            exec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    out.println("cmd://"+cmd.getText());
+                    out.flush();
+
+                }
+            });
 
         } else if (id == R.id.nav_off) {
+            //power off functionality
 
         } else if (id == R.id.nav_manage) {
 
