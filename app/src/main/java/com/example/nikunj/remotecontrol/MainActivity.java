@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent i = getIntent();
         try {
-            s = new Socket(i.getStringExtra("ip"), 3333);
+            s = new Socket(i.getStringExtra("ip"), Integer.parseInt(i.getStringExtra("port")));
             in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())), false);
 
