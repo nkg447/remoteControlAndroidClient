@@ -5,7 +5,7 @@ Uses Socket Programming for communication.<br />
 ## Download <img src="https://img.shields.io/badge/alfred-download-brightgreen.svg">
 Download the app -
 [click here](https://drive.google.com/file/d/1k_WCEi6Y3F7o5jtjSf7I2tyAadbRUEF8/view?usp=sharing) <br/>
-Download the PC Server file - [click here](https://drive.google.com/file/d/1uj8fHWbC77tzvOrulf1Rcnf1S3Q3fsrj/view?usp=sharing)<br/>
+Download the PC Server file - [click here](https://drive.google.com/file/d/1g4k76NuIgUvvKjgArSP3kIbf7Kp-vd5-/view?usp=sharing)<br/>
 
 ## Getting Started
 These instructions will help you get the project up and running on your local machine for development and testing purposes.
