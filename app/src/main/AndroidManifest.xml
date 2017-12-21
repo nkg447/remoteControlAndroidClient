@@ -25,7 +25,15 @@
             android:name=".demo"
             android:label="@string/title_activity_demo"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".activ" />
+        <activity
+            android:name=".Testing"
+            android:label="@string/title_activity_testing"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
