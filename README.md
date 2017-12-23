@@ -4,7 +4,7 @@ Uses Socket Programming for communication.<br />
 
 ## Download 
 Download the app -
-[click here](https://drive.google.com/file/d/1k_WCEi6Y3F7o5jtjSf7I2tyAadbRUEF8/view?usp=sharing) <br/>
+[click here](https://sourceforge.net/projects/remote-control-android/files/remoteControl.apk/download) <br/>
 Download the PC Server file - [click here](https://drive.google.com/file/d/1g4k76NuIgUvvKjgArSP3kIbf7Kp-vd5-/view?usp=sharing)<br/>
 
 ## Getting Started
