@@ -9,7 +9,6 @@ import android.widget.EditText;
 
 public class IPSelector extends AppCompatActivity {
     EditText ip,port;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,5 +32,11 @@ public class IPSelector extends AppCompatActivity {
         i.putExtra("ip", ip.getText().toString());
         i.putExtra("port",port.getText().toString());
         startActivity(i);
+    }
+
+    public void errorHandler(Exception e) {
+        Intent er = new Intent(this, ErrorLabel.class);
+        er.putExtra("error", e.toString() + " \nMessage - " + e.getMessage());
+        startActivity(er);
     }
 }

@@ -3,8 +3,6 @@ package com.example.nikunj.remotecontrol;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,7 +19,6 @@ import android.widget.LinearLayout;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -39,7 +36,6 @@ public class MainActivity extends AppCompatActivity
     EditText cmd;
     private LinearLayout linear;
     String parentPath = "/home";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         linear = (LinearLayout) findViewById(R.id.linearLayout2);
+
 
         Intent i = getIntent();
         try {
@@ -214,12 +211,34 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-        } else if (id == R.id.nav_off) {
-            //power off functionality
+        } else if (id == R.id.nav_path) {
+            linear.removeAllViews();
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View rowView = inflater.inflate(R.layout.open_path, null);
+            // Add the new row before the add field button.
+            linear.addView(rowView, linear.getChildCount());
+            cmd=(EditText)findViewById(R.id.command);
+            Button exec=(Button)findViewById(R.id.execute);
+
+            cmd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cmd.setText("");
+                }
+            });
+
+            exec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    parentPath=cmd.getText().toString();
+                    makeActivity();
+                }
+            });
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            shareIt();
 
         } else if (id == R.id.nav_send) {
 
@@ -228,6 +247,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void shareIt() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "https://sourceforge.net/projects/remote-control-android/files/remoteControl.apk/download";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download link");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
 

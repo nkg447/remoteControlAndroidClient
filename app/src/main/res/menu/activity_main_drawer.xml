@@ -13,9 +13,9 @@
             android:icon="@drawable/cmd"
             android:title="Command" />
         <item
-            android:id="@+id/nav_off"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="PowerOff" />
+            android:id="@+id/nav_path"
+            android:icon="@drawable/path"
+            android:title="Goto path" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
